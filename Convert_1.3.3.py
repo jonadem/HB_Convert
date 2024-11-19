@@ -6,7 +6,7 @@
 #  This script is written with "HomeBank" in mind. <http://homebank.free.fr>
 #  Purpose:    to convert any Bank-file.csv into Homebank.csv by means of a definition-file.
 #  
-#  Convert.py is written in Python(2.6) and free software,
+#  Convert.py is written in Python and free software,
 #  It is distributed in the hope that it will be useful, but comes WITHOUT ANY WARRANTY;
 #  without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 #  See the GNU General Public License for more details.
@@ -62,7 +62,7 @@ class CsvConvert:
             if (len(d) == 5):
                 # definition line contains already defined field -> improper "not-in-use" data ?
                 if (d_old == d[0]) and (int(d[2]) < 0):
-                    print 'Error in definition-file-record[%s]: field already defined !'% n
+                    print('Error in definition-file-record[%s]: field already defined !'% n)
                     logfile_.write('Error in definition-file-record[%s]: field already defined ! \n'% n)
                 else:
                     # Extract Details for Date,Paycode,Sign:
@@ -78,7 +78,7 @@ class CsvConvert:
                             cod_ = (d[4].split(','))
                             Even = len(cod_)-(len(cod_)/2)*2    # this is zero if Even
                             if (Even != 0):
-                                print 'Error in definition-file: paycode detail-data ncorrect, Not correct amount of items'
+                                print('Error in definition-file: paycode detail-data ncorrect, Not correct amount of items')
                                 logfile_.write('Error in definition-file: paycode detail-data Incorrect, Not correct amount of items \n')
                         # Sign (Amount)
                         elif int(d[0]) == 5:    posneg = d[4]
@@ -98,8 +98,8 @@ class CsvConvert:
                     
                 d_old = d[0]                    # remember curr. field-data
             # rest is invalid definition line
-        print hb
-        print ip
+        print(hb)
+        print(ip)
         
         # parse import.csv
         n = 0                                   # (import line counter)
@@ -151,7 +151,7 @@ class CsvConvert:
                         # if between quotes a comma is present, change to '.'
                         # remove quotes after checking
                         Quotes = True
-                        print "  " + line
+                        print("  " + line)
                         while Quotes:
                             ln = len(line)
                             q1 = line.find('"')
@@ -214,12 +214,12 @@ class CsvConvert:
                             rec_new = ''
                             # empty code
                             if (code == ''):
-                                print '>>>>> Empty Paycode: ' + rec[b]
+                                print('>>>>> Empty Paycode: ' + rec[b])
                                 logfile_.write('Empty Paycode "%s" in record[%s]\n'% (rec[b],n))
                             else:    
                                 # Unknown paycode (Not in .def)
                                 if code.find(rec[b]) < 0:
-                                    print '>>>>> Unknown Paycode: ' + rec[b]
+                                    print('>>>>> Unknown Paycode: ' + rec[b])
                                     logfile_.write('Unknown Paycode "%s" in record[%s]\n'% (rec[b],n))
                                 # Known paycode (present in def)
                                 else:
@@ -238,7 +238,7 @@ class CsvConvert:
                                 am = rec[b]
                                 am = ParseAmount(am)
                                 if not ParseAmount.valid:
-                                    print 'Error in record[%s]: Amount-Field corrupt\n'% n
+                                    print('Error in record[%s]: Amount-Field corrupt\n'% n)
                                     logfile_.write('Error in record[%s]: Amount-Field corrupt\n'% n)
                                     break
                             # Sign
@@ -327,7 +327,7 @@ class CsvConvert:
                             elif (h == 8):
                                 # For future use, now just print available Balance-value ....
                                 bal = re.sub('[^0-9.-]','',rec_new)
-                                print float(bal) + float(am)
+                                print(float(bal) + float(am))
 
                         # Field not available [-1]
                         elif (h < 7) and (ip[j] == -1):
@@ -392,25 +392,25 @@ class convert:
         homebank = ['date','paymode','info','payee','description','amount','category']  # 4.3
         
         if (len(sys.argv) != 4):
-            print error
+            print(error)
             exit(1)
 
         if os.path.isfile(sys.argv[1]):
             fromfile = open(sys.argv[1],'r')
         else:
-            print '\nInput error!____ import.csv: ' + sys.argv[1] + ' does not exist / cannot be opened !!\n'
+            print('\nInput error!____ import.csv: ' + sys.argv[1] + ' does not exist / cannot be opened !!\n')
             exit(1)
             
         try:
             tofile   = open(sys.argv[2],'w')
         except:
-            print '\nInput error!____ output.csv: ' + sys.argv[2] + ' cannot be created !!\n'
+            print('\nInput error!____ output.csv: ' + sys.argv[2] + ' cannot be created !!\n')
             exit(1)
             
         if os.path.isfile(sys.argv[3]):
             deffile = open(sys.argv[3],'r')
         else: 
-            print '\nInput error!____ import.def: ' + sys.argv[3] + ' does not exist / cannot be opened !!\n'
+            print('\nInput error!____ import.def: ' + sys.argv[3] + ' does not exist / cannot be opened !!\n')
             exit(1)
             
         logfile  = open('log.txt', 'w')
